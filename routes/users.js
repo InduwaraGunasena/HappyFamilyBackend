@@ -25,21 +25,23 @@ router.post('/', async (req,res) => {
         res.status(400).send(result.error.details[0].message);
         return;
     }
+     try{
+        let user = await userController.getUser(req.body.name);
+        /////////////////
 
-    let user = await userController.getUser(req.body.name);
-    if (user) return res.status(400).send("User already exists");
-    /////////////////
+        const encrypted_pass = await userController.encrypt(req.body.password);
 
-    const encrypted_pass = await userController.encrypt(req.body.password);
+        let user = await userController.createUser(req.body.name,req.body.email,encrypted_pass);
 
-    user = await userController.createUser(req.body.name,req.body.email,encrypted_pass);
+        const token = user.generateAuthToken();
 
-    const token = user.generateAuthToken();
-
-    res
-        .header('x-auth-token',token)
-        .send(_.pick(user,['_id','name','email']));
-    console.log("user added");
+        res
+            .header('x-auth-token',token)
+            .send(_.pick(user,['_id','name','email']));
+        console.log("user added");
+     }catch(error){
+        res.status(400).send("User already exists")
+     }
 });
 
 router.put('/', async (req,res) => {
