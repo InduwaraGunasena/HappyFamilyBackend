@@ -31,7 +31,7 @@ router.post('/', async (req,res) => {
 
         const encrypted_pass = await userController.encrypt(req.body.password);
 
-        let user = await userController.createUser(req.body.name,req.body.email,encrypted_pass);
+        user = await userController.createUser(req.body.name,req.body.email,encrypted_pass);
 
         const token = user.generateAuthToken();
 
