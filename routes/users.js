@@ -74,7 +74,7 @@ router.delete('/', async (req,res) => {
     }
 
     //delete the user
-    user = await userController.deleteUser(req.params.name);
+    user = await userController.deleteUser(req.body.name);
     res.send(user);
     console.log("user deleted");
 });
