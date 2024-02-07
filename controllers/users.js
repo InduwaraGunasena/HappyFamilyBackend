@@ -11,8 +11,7 @@ const userSchema = new mongoose.Schema({
         type : String,
         required: true,
         minlength : 3,
-        maxlength : 50,
-        unique : true
+        maxlength : 50
     }, //required is a validator that checks if the field has any value or not
     email : {
         type : String,
